@@ -13,7 +13,11 @@
         }
 
         .navbar {
-            background-color: #680913;
+            background-color: #8e8d8e;
+        }
+        .navbar-top {
+        background-color: #d4d3d4;
+    
         }
 
         .navbar-brand {
@@ -22,7 +26,7 @@
         }
 
         .navbar-brand img {
-            max-height: 30px;
+            max-height: 12vh;
             margin-right: 10px;
         }
 
@@ -30,7 +34,25 @@
             color: #ffffff;
             font-weight: bold;
             margin: 0 auto;
+            margin-right: 2vh;
         }
+        .navbar-left {
+            margin-left: 2vh;   
+        }
+        .navbar-right {
+            margin-right: 2vh;   
+        }
+        .navbar-right a {
+            color: inherit; 
+            text-decoration: none; 
+        }
+
+        .navbar-right a:hover {
+            color: #800000;
+            text-decoration: underline; 
+
+        }
+
 
         .form-control {
             border-radius: 0;
@@ -64,29 +86,70 @@
         text-decoration: underline; 
         color: #800000;
         }
+        .logo {
+        transform: scale(1.5); 
+        }
+        footer {
+            background-color: #8e8d8e;
+            color: #fff;
+            text-align: center;
+            padding: 0.5rem;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: nowrap;
+        }
+
+        dl {
+            text-align: left;
+            border-right: 1px solid #fff;
+            padding-right: 15px;
+            margin-bottom: 0px;
+        }
+       
+        dt {
+            font-weight: bold;
+        }
+
+        dd {
+            margin: 0 0 0.5rem 0;
+        }
 
     </style>
 </head>
 <body>
     <div id="app" >
+        <nav class="navbar navbar-top">
+                <div class="navbar-left">
+                    <span id="fecha-actual"></span>
+                </div>
+                <div class="navbar-right">
+                    <a href="https://www.unsa.edu.pe" >UNSA WEB</a>
+                </div>
+        </nav>
+        
         <nav class="navbar">
-            <div class="container">
-                <a class="navbar-brand" href="#">
-                    <img src="logo.png" alt="Logo" />
+                <a class="navbar-brand" href="/">
+                    <img src="https://www.unsa.edu.pe/directorio/img/logo-unsa.png" alt="Logo" class="img-fluid" class="logo" />
                     
                 </a>
-                <span class="navbar-text">Dependencias</span>
-
-            </div>
+                <h2 class="navbar-text ml-auto">Directorio Institucional</h2>
         </nav>
         <br/>
         <div class="container">    
           <div class="row my-3">
               <div class="col-md-8">
+                  <label for="buscarNombre">Buscar por nombre de dependencia o responsable</label>
                   <input type="text" v-model="busqueda" class="form-control" placeholder="Buscar..." @input="buscar" />
               </div>
+              <br/>
               <div class="col-md-4">
-                  <button @click="buscar" class="btn btn-danger btn-buscar">Buscar</button>
+                  <button @click="buscar" class="btn btn btn-secondary rounded-pill">Buscar Información</button>
               </div>
           </div>
           <div v-if="itemSeleccionado !== null" class="resultado">
@@ -120,19 +183,24 @@
             </div>
             <br/>
             <div v-if="itemSeleccionado.subdependencias !== null">
-                <h3>Subdependencias:</h3>
                 
-                <ul class="list-group">
-                    <li class="list-group-item" v-for="item in itemSeleccionado.subdependencias" @click="mostrarItem(item)">
-                      <a href="#">{{ item.nombre }}</a>
-                    </li>
-                </ul>
+                <div v-if="itemSeleccionado.subdependencias.length > 0">
+                    <h3>Subdependencias:</h3>
+                    <ul class="list-group">
+                        <li class="list-group-item" v-for="item in itemSeleccionado.subdependencias" @click="mostrarItem(item)">
+                        <a href="#">{{ item.nombre }}</a>
+                        </li>
+                    </ul>
+                </div>
+                <div v-else>
+                    <p><strong>No tiene subdependencias</strong></p>
+                </div>                
             </div>
             
         </div>
 
         
-          <div class="resultado">
+          <div v-if="itemsFiltrados" class="resultado">
             <h2>Lista de Dependencias:</h2>
               <ul class="list-group">
                   <li class="list-group-item" v-for="item in itemsFiltrados" @click="mostrarItem(item)">
@@ -142,14 +210,56 @@
           </div>
       </div>
     </div>
-
+    <br/>
+    <footer >
+        <div class="footer-content">
+            <dl>
+                <dt>Dirección Universitaria de Admisión</dt>
+                <dd>054-287657</dd>
+                <dd>dua@unsa.edu.pe</dd>
+            </dl>
+            <dl>
+                <dt>Centro de Idiomas</dt>
+                <dd>054-247524</dd>
+                <dd>idiomas@unsa.edu.pe</dd>
+            </dl>
+            <dl>
+                <dt>InfoUNSA</dt>
+                <dd>054-204914</dd>
+                <dd>infounsa@unsa.edu.pe</dd>
+            </dl>
+            <dl>
+                <dt>Convenios</dt>
+                <dd>054-285067</dd>
+                <dd>convenios@unsa.edu.pe</dd>
+            </dl>
+            <dl>
+                <dt>Whatsapp</dt>
+                <dd>942503787</dd>
+                <dd>Quejas y sugerencias</dd>
+            </dl>
+            <dl>
+                <dt>Oficina Universitaria de Informática y Sistemas</dt>
+                <dd>+51 54 391911</dd>
+                <dd>ouis@unsa.edu.pe</dd>
+            </dl>
+        </div>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var fechaActualElement = document.getElementById('fecha-actual');
+            var fechaActual = new Date();
+            var opciones = { year: 'numeric', month: 'long', day: 'numeric' };
+            fechaActualElement.textContent = fechaActual.toLocaleDateString('es-ES', opciones);
+        });
+    </script>
     <script>
         new Vue({
             el: '#app',
             data() {
                 return {
                     busqueda: '',
-                    itemsFiltrados: [],
+                    itemsFiltrados: null,
                     itemSeleccionado: null
                 };
             },
