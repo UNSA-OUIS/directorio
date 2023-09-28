@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dependencias</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIb5DaxIMzki_OwF8Nr-zJVFpLBMjDMj0"></script>
+    <style>
+        body {
+            background-color: #f3f3f3;
+        }
+
+        .navbar {
+            background-color: #680913;
+        }
+
+        .navbar-brand {
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        .navbar-brand img {
+            max-height: 30px;
+            margin-right: 10px;
+        }
+
+        .navbar-text {
+            color: #ffffff;
+            font-weight: bold;
+            margin: 0 auto;
+        }
+
+        .form-control {
+            border-radius: 0;
+            width: calc(100% - 100px);
+        }
+
+        .btn-buscar {
+            border-radius: 0;
+        }
+
+        .resultado {
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+            padding: 10px;
+        }
+
+        .resultado p {
+            margin: 5px 0;
+        }
+
+        .resultado strong {
+            font-weight: bold;
+        }
+        .resultado a {
+        text-decoration: none; 
+        color: black; 
+        }
+
+        .resultado a:hover {
+        text-decoration: underline; 
+        color: #800000;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="app" >
+        <nav class="navbar">
+            <div class="container">
+                <a class="navbar-brand" href="#">
+                    <img src="logo.png" alt="Logo" />
+                    
+                </a>
+                <span class="navbar-text">Dependencias</span>
+
+            </div>
+        </nav>
+        <br/>
+        <div class="container">    
+          <div class="row my-3">
+              <div class="col-md-8">
+                  <input type="text" v-model="busqueda" class="form-control" placeholder="Buscar..." @input="buscar" />
+              </div>
+              <div class="col-md-4">
+                  <button @click="buscar" class="btn btn-danger btn-buscar">Buscar</button>
+              </div>
+          </div>
+          <div v-if="itemSeleccionado !== null" class="resultado">
+            <h2>{{ itemSeleccionado.nombre }}</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <p><strong>Nombre:</strong> {{ itemSeleccionado.nombre }}</p>
+                </div>
+                <div class="col-md-4">
+                    <p><strong>Responsable:</strong> {{ itemSeleccionado.responsable }}</p>
+                </div>
+                <div class="col-md-4">
+                    <p><strong>Correo Responsable:</strong> {{ itemSeleccionado.correo_responsable }}</p>
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <p><strong>Direccion:</strong> {{ itemSeleccionado.direccion }}</p>
+                </div>
+                <div class="col-md-4">
+                    <p><strong>Telefono:</strong> {{ itemSeleccionado.telefono }}</p>
+                </div>
+                <div class="col-md-4">
+                    <p><strong>Correo:</strong> {{ itemSeleccionado.correo }}</p>
+                </div>
+            </div>
+            <br/>
+            <div class="row justify-content-center">
+                <div id="mapa" style="height: 200px; width: 90%;" class="w-90 border rounded"></div>
+            </div>
+            <br/>
+            <div v-if="itemSeleccionado.subdependencias !== null">
+                <h3>Subdependencias:</h3>
+                
+                <ul class="list-group">
+                    <li class="list-group-item" v-for="item in itemSeleccionado.subdependencias" @click="mostrarItem(item)">
+                      <a href="#">{{ item.nombre }}</a>
+                    </li>
+                </ul>
+            </div>
+            
+        </div>
+
+        
+          <div class="resultado">
+            <h2>Lista de Dependencias:</h2>
+              <ul class="list-group">
+                  <li class="list-group-item" v-for="item in itemsFiltrados" @click="mostrarItem(item)">
+                    <a href="#">{{ item.nombre }}</a>
+                  </li>
+              </ul>
+          </div>
+      </div>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    busqueda: '',
+                    itemsFiltrados: [],
+                    itemSeleccionado: null
+                };
+            },
+            methods: {
+                async buscar() {
+                    const token = '2|bGEO7NzJCMJNU6h6Iq20l1V8thNErzLDjy7GbPUC';                     
+                    try {
+                        const response = await axios.get('https://apps.unsa.edu.pe/CEIN/public/api/directorio/v1/dependencias', {
+                            headers: {
+                                'Authorization': `Bearer ${token}`
+                            },
+                            params: {
+                                filter: this.busqueda
+                            }
+                        });
+
+                        this.itemsFiltrados = await response.data.data;
+                    } catch (error) {
+                        console.error('Error al obtener datos:', error);
+                    }
+                    this.itemSeleccionado = null;
+                },
+                async mostrarItem(item) {
+                    const token = '2|bGEO7NzJCMJNU6h6Iq20l1V8thNErzLDjy7GbPUC';                     
+                    try {
+                        const response = await axios.get('https://apps.unsa.edu.pe/CEIN/public/api/directorio/v1/dependencias', {
+                            headers: {
+                                'Authorization': `Bearer ${token}`
+                            },
+                            params: {
+                                id: item.id
+                            }
+                        });
+                        this.itemSeleccionado = await response.data.data[0];
+                        this.$nextTick(() => {
+                            const mapOptions = {
+                                center: { lat: 48.8588443, lng: 2.2943506},
+                                zoom: 15
+                            };
+                            
+                            const mapElement = document.getElementById("mapa");
+                            const map = new google.maps.Map(mapElement, mapOptions);
+                        
+                            new google.maps.Marker({
+                                position: { lat: 48.8588443, lng: 2.2943506 },
+                                map: map,
+                                title: item.nombre
+                            });
+                        });
+                    } catch (error) {
+                        console.error('Error al obtener datos:', error);
+                    }
+                   
+                   
+                }
+            }
+        });
+    </script>
+</body>
+</html>
