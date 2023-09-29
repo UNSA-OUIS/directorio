@@ -108,7 +108,8 @@
         dl {
             text-align: left;
             border-right: 1px solid #fff;
-            padding-right: 15px;
+            padding-right: 10px;
+            padding-left: 10px;
             margin-bottom: 0px;
         }
        
@@ -208,9 +209,21 @@
                   </li>
               </ul>
           </div>
+
+          <div v-if="!itemsFiltrados" class="resultado">
+            <h2>Destacados:</h2>
+            <ul class="list-group">
+                <li class="list-group-item" v-for="item in destacados"  @click="mostrarItem(item)">
+                    <a href="#">{{ item.nombre }}</a>
+                </li>
+            </ul>
+        </div>
       </div>
+
     </div>
+
     <br/>
+
     <footer >
         <div class="footer-content">
             <dl>
@@ -260,10 +273,16 @@
                 return {
                     busqueda: '',
                     itemsFiltrados: null,
-                    itemSeleccionado: null
+                    itemSeleccionado: null,
+                    destacados: [],
                 };
             },
             methods: {
+                async cargarDestacados() {
+                    const response = await axios.get('https://apps.unsa.edu.pe/CEIN/public/api/directorio/v1/ranking_dependencias');
+                    console.log(response.data.data);
+                    this.destacados = response.data.data; 
+                },
                 async buscar() {
                     const token = '2|bGEO7NzJCMJNU6h6Iq20l1V8thNErzLDjy7GbPUC';                     
                     try {
@@ -285,15 +304,12 @@
                 async mostrarItem(item) {
                     const token = '2|bGEO7NzJCMJNU6h6Iq20l1V8thNErzLDjy7GbPUC';                     
                     try {
-                        const response = await axios.get('https://apps.unsa.edu.pe/CEIN/public/api/directorio/v1/dependencias', {
+                        const response = await axios.get(`https://apps.unsa.edu.pe/CEIN/public/api/directorio/v1/dependencias/${item.id}`, {
                             headers: {
                                 'Authorization': `Bearer ${token}`
-                            },
-                            params: {
-                                id: item.id
                             }
                         });
-                        this.itemSeleccionado = await response.data.data[0];
+                        this.itemSeleccionado = await response.data.data;
                         this.$nextTick(() => {
                             const mapOptions = {
                                 center: { lat: 48.8588443, lng: 2.2943506},
@@ -315,6 +331,9 @@
                    
                    
                 }
+            },
+            created() {
+                this.cargarDestacados(); 
             }
         });
     </script>
