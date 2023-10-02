@@ -143,6 +143,12 @@
         </nav>
         <br/>
         <div class="container">    
+            <div class="row my-3">
+                
+                <div class="col-md-4">
+                    <button @click="cargarAutoridades" class="btn btn btn-secondary rounded-pill">Principales Autoridades</button>
+                </div>
+            </div>
           <div class="row my-3">
               <div class="col-md-8">
                   <label for="buscarNombre">Buscar por nombre de dependencia o responsable</label>
@@ -280,6 +286,10 @@
             methods: {
                 async cargarDestacados() {
                     const response = await axios.get('https://apps.unsa.edu.pe/CEIN/public/api/directorio/v1/ranking_dependencias');
+                    this.destacados = response.data.data; 
+                },
+                async cargarAutoridades() {
+                    const response = await axios.get('https://apps.unsa.edu.pe/CEIN/public/api/directorio/v1/principales_dependencias');
                     console.log(response.data.data);
                     this.destacados = response.data.data; 
                 },
