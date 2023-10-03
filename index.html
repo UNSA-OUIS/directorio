@@ -148,11 +148,11 @@
         <div class="container">    
             <div class="row my-3">
                 
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <button @click="cargarAutoridades" class="btn btn-secondary btn-lg rounded-1" style="width: 200px; height: 75px;">Principales Autoridades</button>
                 </div>
                 
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <button class="btn btn-secondary btn-lg rounded-1" onclick="window.open('https://www.unsa.edu.pe/docentes/', '_blank');" style="width: 200px; height: 75px;">Personal Docente</button>
                 </div>
                 
@@ -245,8 +245,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="item in autoridades" @click="mostrarItem(item)">
-                        <td><a href="#">{{ item.responsable }}</a></td>
+                    <tr v-for="item in autoridades">
+                        <td><a href="#" @click.stop="mostrarItem(item)">{{ item.responsable }}</a></td>
                         <td>{{ item.cargo }}</td>
                         <td>{{ item.area }}</td>
                         <td>{{ item.correo }}</td>
