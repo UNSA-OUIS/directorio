@@ -148,9 +148,14 @@
         <div class="container">    
             <div class="row my-3">
                 
-                <div class="col-md-4">
-                    <button @click="cargarAutoridades" class="btn btn-secondary btn-lg rounded-1">Principales Autoridades</button>
+                <div class="col-md-3">
+                    <button @click="cargarAutoridades" class="btn btn-secondary btn-lg rounded-1" style="width: 200px; height: 75px;">Principales Autoridades</button>
                 </div>
+                
+                <div class="col-md-3">
+                    <button class="btn btn-secondary btn-lg rounded-1" onclick="window.open('https://www.unsa.edu.pe/docentes/', '_blank');" style="width: 200px; height: 75px;">Personal Docente</button>
+                </div>
+                
             </div>
           <div class="row my-3">
               <div class="col-md-8">
@@ -318,6 +323,8 @@
                     const response = await axios.get('https://apps.unsa.edu.pe/CEIN/public/api/directorio/v1/principales_dependencias');
                     console.log(response.data);
                     this.destacados = null;
+                    this.itemSeleccionado = null;
+                    this.itemsFiltrados = null;
                     this.autoridades = response.data.data; 
                 },
                 async buscar() {
