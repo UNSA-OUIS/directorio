@@ -215,11 +215,21 @@
         
           <div v-if="itemsFiltrados" class="resultado">
             <h2>Lista de Dependencias:</h2>
-              <ul class="list-group">
-                  <li class="list-group-item" v-for="item in itemsFiltrados" @click="mostrarItem(item)">
-                    <a href="#">{{ item.nombre }}</a>
-                  </li>
-              </ul>
+              
+              <table class="table">
+                <thead>
+                    <tr>
+                        <th>Dependencia</th>
+                        <th>Responsable</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="item in itemsFiltrados">
+                        <td><a href="#" @click.stop="mostrarItem(item)">{{ item.nombre }}</a></td>
+                        <td>{{ item.responsable }}</td>
+                    </tr>
+                </tbody>
+            </table>
           </div>
 
           <div v-if="destacados != null" class="resultado">
