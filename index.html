@@ -357,6 +357,7 @@
                 async mostrarItem(item) {
                     this.destacados = null;
                     this.autoridades = null;
+                    this.itemsFiltrados = null;
                     const token = '2|bGEO7NzJCMJNU6h6Iq20l1V8thNErzLDjy7GbPUC';                     
                     try {
                         const response = await axios.get(`https://apps.unsa.edu.pe/CEIN/public/api/directorio/v1/dependencias/${item.id}`, {
