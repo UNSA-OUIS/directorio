@@ -365,17 +365,18 @@
                             }
                         });
                         this.itemSeleccionado = await response.data.data;
+                        console.log(this.itemSeleccionado)
                         this.$nextTick(() => {
                             const mapOptions = {
-                                center: { lat: 48.8588443, lng: 2.2943506},
-                                zoom: 15
+                                center: { lat: +this.itemSeleccionado.latitud, lng: +this.itemSeleccionado.longitud},
+                                zoom: 17
                             };
                             
                             const mapElement = document.getElementById("mapa");
                             const map = new google.maps.Map(mapElement, mapOptions);
                         
                             new google.maps.Marker({
-                                position: { lat: 48.8588443, lng: 2.2943506 },
+                                position: { lat: +this.itemSeleccionado.latitud, lng: +this.itemSeleccionado.longitud },
                                 map: map,
                                 title: item.nombre
                             });
