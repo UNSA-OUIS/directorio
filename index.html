@@ -133,15 +133,13 @@
                     <span id="fecha-actual"></span>
                 </div>
                 <div class="navbar-right">
-                    <a href="https://www.unsa.edu.pe" >UNSA WEB</a>
+                    <a href="https://www.unsa.edu.pe" target="_blank">UNSA WEB</a>
                 </div>
         </nav>
         
         <nav class="navbar">
-                <a class="navbar-brand" href="/">
                     <img src="https://www.unsa.edu.pe/directorio/img/logo-unsa.png" alt="Logo" class="img-fluid" class="logo" />
                     
-                </a>
                 <h2 class="navbar-text ml-auto">Directorio Institucional</h2>
         </nav>
         <br/>
@@ -192,7 +190,7 @@
             </div>
             <br/>
             <div class="row justify-content-center">
-                <div id="mapa" style="height: 200px; width: 90%;" class="w-90 border rounded"></div>
+                <div id="mapa" class="w-90 border rounded"></div>
             </div>
             <br/>
             <div v-if="itemSeleccionado.subdependencias !== null">
@@ -328,7 +326,6 @@
                 },
                 async cargarAutoridades() {
                     const response = await axios.get('https://apps.unsa.edu.pe/CEIN/public/api/directorio/v1/principales_dependencias');
-                    console.log(response.data);
                     this.destacados = null;
                     this.itemSeleccionado = null;
                     this.itemsFiltrados = null;
@@ -366,32 +363,49 @@
                             }
                         });
                         this.itemSeleccionado = await response.data.data;
-                        console.log(this.itemSeleccionado)
-                        this.$nextTick(() => {
-                            const mapOptions = {
-                                center: { lat: +this.itemSeleccionado.latitud, lng: +this.itemSeleccionado.longitud},
-                                zoom: 17
-                            };
+                        if (this.itemSeleccionado.latitud && this.itemSeleccionado.longitud) {
+                            this.$nextTick(() => {
+                                const mapOptions = {
+                                    center: { lat: +this.itemSeleccionado.latitud, lng: +this.itemSeleccionado.longitud},
+                                    zoom: 17
+                                };
+                                
+                                const mapElement = document.getElementById("mapa");
+                                if (mapElement) {
+
+                                    mapElement.style.width = "90%";
+                                    mapElement.style.height = "200px";
+                                    
+                                }
+                                const map = new google.maps.Map(mapElement, mapOptions);
                             
-                            const mapElement = document.getElementById("mapa");
-                            const map = new google.maps.Map(mapElement, mapOptions);
-                        
-                            new google.maps.Marker({
-                                position: { lat: +this.itemSeleccionado.latitud, lng: +this.itemSeleccionado.longitud },
-                                map: map,
-                                title: item.nombre
+                                new google.maps.Marker({
+                                    position: { lat: +this.itemSeleccionado.latitud, lng: +this.itemSeleccionado.longitud },
+                                    map: map,
+                                    title: item.nombre
+                                });
                             });
-                        });
-                    } catch (error) {
+                        
+                        }
+                        else {
+                                const mapElement = document.getElementById("mapa");
+                                if (mapElement) {
+
+                                    mapElement.style.display = "none";
+                                    mapElement.style.width = "0px";
+                                    mapElement.style.height = "0px";
+                                }
+                            }
+                        
+                }
+                catch (error) {
                         console.error('Error al obtener datos:', error);
                     }
-                   
-                   
-                }
             },
             created() {
                 this.cargarDestacados(); 
             }
+        },
         });
     </script>
 </body>
