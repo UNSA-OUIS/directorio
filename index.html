@@ -19,7 +19,9 @@
         background-color: #d4d3d4;
     
         }
-
+        .navbar.navbar-top {
+            height: 4vh;
+        }
         .navbar-brand {
             color: #ffffff;
             font-weight: bold;
@@ -35,6 +37,7 @@
             font-weight: bold;
             margin: 0 auto;
             margin-right: 2vh;
+            font-size: x-large;
         }
         .navbar-left {
             margin-left: 2vh;   
@@ -65,6 +68,11 @@
 
         .btn-secondary:hover {
             background-color: #800000;
+        }
+        .btn-secondary {
+            background-color: #ebeae6;
+            border-color: #8e8d8e;
+            color: black;
         }
         .resultado {
             background-color: #ffffff;
@@ -114,6 +122,7 @@
             padding-right: 10px;
             padding-left: 10px;
             margin-bottom: 0px;
+            font-size: small;
         }
        
         dt {
@@ -142,12 +151,11 @@
                     
                 <h2 class="navbar-text ml-auto">Directorio Institucional</h2>
         </nav>
-        <br/>
         <div class="container">    
             <div class="row my-3">
                 
-                    <button @click="cargarAutoridades" class="btn btn-secondary btn-lg rounded-1" style="width: 200px; height: 75px;">Principales Autoridades</button>
-                    <button class="btn btn-secondary btn-lg rounded-1" onclick="window.open('https://www.unsa.edu.pe/docentes/', '_blank');" style="width: 200px; height: 75px; margin-left: 15px;">Personal Docente</button>
+                    <button @click="cargarAutoridades" class="btn btn-secondary btn-lg rounded-1" style="width: 27vh; height: 8vh; font-size: medium;">Principales Autoridades</button>
+                    <button class="btn btn-secondary btn-lg rounded-1" onclick="window.open('https://www.unsa.edu.pe/docentes/', '_blank');" style="width: 27vh; height: 8vh; font-size: medium;margin-left: 15px;">Personal Docente</button>
 
                 
                 
