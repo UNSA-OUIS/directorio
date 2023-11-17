@@ -410,7 +410,7 @@
                             }
                         });
                         this.itemSeleccionado = await response.data.data;
-                        console.log(this.itemSeleccionado);
+                        //console.log(this.itemSeleccionado);
                         if (this.itemSeleccionado.latitud && this.itemSeleccionado.longitud) {
                             this.$nextTick(() => {
                                 const mapOptions = {
