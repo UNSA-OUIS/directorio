@@ -11,7 +11,16 @@
         body {
             background-color: #f3f3f3;
         }
+        .table-hover-link a {
+            text-decoration: none;
+            color: inherit;
+            transition: color 0.3s; 
+        }
 
+        .table-hover-link a:hover {
+            text-decoration: underline !important;
+            color: #800000 !important;
+        }
         .navbar {
             background-color: #8e8d8e;
         }
@@ -137,6 +146,7 @@
             padding: 5px 10px;
             width: 100%; 
         }
+        
 
     </style>
 </head>
@@ -188,7 +198,7 @@
             <button @click="buscar" class="btn btn btn-secondary rounded-1">Buscar Información</button>
         </div>
           <div v-if="itemSeleccionado !== null" class="resultado">
-            <h2>{{ itemSeleccionado.nombre }}</h2>
+            <h4>{{ itemSeleccionado.nombre }}</h4>
             <div class="row">
                 <div class="col-md-4">
                     <p><strong>Nombre:</strong> {{ itemSeleccionado.nombre }}</p>
@@ -220,12 +230,25 @@
             <div v-if="itemSeleccionado.subdependencias !== null">
                 
                 <div v-if="itemSeleccionado.subdependencias.length > 0">
-                    <h3>Subdependencias:</h3>
-                    <ul class="list-group">
-                        <li class="list-group-item" v-for="item in itemSeleccionado.subdependencias" @click="mostrarItem(item)">
-                        <a href="#">{{ item.nombre }}</a>
-                        </li>
-                    </ul>
+                    <p><strong>Subdependencias</strong></p>
+                    <table class="table table-striped table-hover">
+                        <thead class="bg-wine text-light">
+                            <tr>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Teléfono</th>
+                                <th scope="col">Correo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="subdependencia in itemSeleccionado.subdependencias" class="table-hover-link" @click="mostrarItem(subdependencia)" style="cursor: pointer;">
+                                <td>
+                                    <a>{{ subdependencia.nombre }}</a>
+                                </td>
+                                <td>{{ subdependencia.telefono }}</td>
+                                <td>{{ subdependencia.correo }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div v-else>
                     <p><strong>No tiene subdependencias</strong></p>
@@ -236,7 +259,7 @@
 
         
           <div v-if="itemsFiltrados" class="resultado">
-            <h2>Lista de Dependencias:</h2>
+            <h4>Lista de Dependencias:</h4>
               
               <table class="table">
                 <thead>
@@ -255,7 +278,7 @@
           </div>
 
           <div v-if="destacados != null" class="resultado">
-            <h2>Destacados:</h2>
+            <h4>Destacados:</h4>
             <ul class="list-group">
                 <li class="list-group-item" v-for="item in destacados"  @click="mostrarItem(item)">
                     <a href="#">{{ item.nombre }}</a>
@@ -263,7 +286,7 @@
             </ul>
           </div>
         <div v-if="autoridades != null" class="resultado">
-            <h2>Autoridades principales:</h2>
+            <h4>Autoridades principales:</h4>
             <table class="table">
                 <thead>
                     <tr>
@@ -387,6 +410,7 @@
                             }
                         });
                         this.itemSeleccionado = await response.data.data;
+                        console.log(this.itemSeleccionado);
                         if (this.itemSeleccionado.latitud && this.itemSeleccionado.longitud) {
                             this.$nextTick(() => {
                                 const mapOptions = {
