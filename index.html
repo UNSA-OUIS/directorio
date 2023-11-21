@@ -366,6 +366,9 @@
                     autoridades: null,
                 };
             },
+            created() {
+                this.cargarDestacados(); 
+            },
             methods: {
                 async cargarDestacados() {
                     const response = await axios.get('https://apps.unsa.edu.pe/CEIN/public/api/directorio/v1/ranking_dependencias');
@@ -443,16 +446,12 @@
                                     mapElement.style.width = "0px";
                                     mapElement.style.height = "0px";
                                 }
-                            }
-                        
+                            }                        
                 }
                 catch (error) {
                         console.error('Error al obtener datos:', error);
                     }
-            },
-            created() {
-                this.cargarDestacados(); 
-            }
+            },        
         },
         });
     </script>
