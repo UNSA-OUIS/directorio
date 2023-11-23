@@ -300,7 +300,7 @@
                     <tr v-for="item in autoridades">
                         <td><a href="#" @click.stop="mostrarItem(item)">{{ item.responsable }}</a></td>
                         <td>{{ item.cargo }}</td>
-                        <td>{{ item.area }}</td>
+                        <td><a href="#" @click.stop="mostrarItem(item)">{{ item.area }}</a></td>
                         <td>{{ item.correo }}</td>
                     </tr>
                 </tbody>
