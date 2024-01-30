@@ -145,9 +145,8 @@
             font-size: 1.5vw;
             padding: 5px 10px;
             width: 100%; 
-        }
+        }   
         
-
     </style>
 </head>
 <body>
@@ -199,6 +198,34 @@
         </div>
           <div v-if="itemSeleccionado !== null" class="resultado">
             <h4>{{ itemSeleccionado.nombre }}</h4>
+            <div class="card-group">
+                <div class="card border-0">
+                    <div class="card-body p-0">
+                        <p class="card-text"><strong>Dirección:</strong> {{ itemSeleccionado.direccion }}</p>
+                        <p class="card-text"><strong>Correo:</strong> {{ itemSeleccionado.correo }}</p>
+                        <p class="card-text"><strong>Teléfono:</strong> {{ itemSeleccionado.telefono }}</p>
+                    </div>
+                </div>
+                <div class="card border-0">
+                    <div class="card-body p-0">
+                        <p class="card-text"><strong>Responsable:</strong></p>
+                        <p class="card-text">{{ itemSeleccionado.responsable }}</p>
+                        <p class="card-text">{{ itemSeleccionado.correo_responsable }}</p>
+                    </div>
+                </div>
+            </div>            
+
+            <!-- <div class="row">
+                <div class="col-md-4">
+                    <p><strong>Direccion:</strong> {{ itemSeleccionado.direccion }}</p>
+                </div>
+                <div class="col-md-4">
+                    <p><strong>Correo:</strong> {{ itemSeleccionado.correo }}</p>
+                </div>
+                <div class="col-md-4">
+                    <p><strong>Telefono:</strong> {{ itemSeleccionado.telefono }}</p>
+                </div>                
+            </div>
             <div class="row">
                 <div class="col-md-4">
                     <p><strong>Nombre:</strong> {{ itemSeleccionado.nombre }}</p>
@@ -208,20 +235,8 @@
                 </div>
                 <div class="col-md-4">
                     <p><strong>Correo Responsable:</strong> {{ itemSeleccionado.correo_responsable }}</p>
-                </div>
-                
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <p><strong>Direccion:</strong> {{ itemSeleccionado.direccion }}</p>
-                </div>
-                <div class="col-md-4">
-                    <p><strong>Telefono:</strong> {{ itemSeleccionado.telefono }}</p>
-                </div>
-                <div class="col-md-4">
-                    <p><strong>Correo:</strong> {{ itemSeleccionado.correo }}</p>
-                </div>
-            </div>
+                </div>                
+            </div> -->            
             <br/>
             <div class="row justify-content-center">
                 <div id="mapa" class="w-90 border rounded"></div>
